@@ -56,7 +56,7 @@ export default function Account () {
             // instruction() builds a transaction instruction (used to combine with other instructions)
     
             console.log(`Transaction: ${txHash}` );
-            toast.success(`Transaction: ${txHash}`);
+            toast.success(`Transaction: ${txHash.slice(0, 5)}`);
         } catch(err){
             toast.error(err);
             console.log("Error: createAccount: ", err);
