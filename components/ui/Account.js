@@ -14,8 +14,8 @@ export default function Account () {
     const [account, setAccount] = useState([]);
     const [data, setData] = useState();
     const [key, setKey] = useState();
-    const [inputKey, setInputKey] = useState();
-    const [newData, setNewData] = useState();
+    const [inputKey, setInputKey] = useState("");
+    const [newData, setNewData] = useState("");
 
     const { connection } = useConnection();
     const wallet = useWallet();
@@ -32,10 +32,16 @@ export default function Account () {
                 toast.error("No data found!");
                 return;
             }
+            if(!program){
+                toast.error("No wallet found!");
+                return;
+            }
+
             const keypair = Keypair.generate();
             console.log("New Account Public Key: ", keypair.publicKey.toBase58());
             console.log("Public Key: ", new PublicKey(key));
             console.log("system program id", SystemProgram.programId.toBase58());
+            console.log("program", program);
     
             const txHash = await program.methods.initialize(
                 parseInt(data),
@@ -77,8 +83,8 @@ export default function Account () {
             <div className="grid col-span-1 h-screen place-items-center border-teal-700 border-r-4 rounded-lg">
                 <div className="p-4 flex flex-col justify-center items-center gap-4 w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-5 dark:bg-gray-800 dark:border-gray-700">
                     <label className="font-semibold">Generate random data to store within the account</label>
-                    <Input value={inputKey} readOnly className="w-96" placeholder="Public Key" />
-                    <Input value={newData} readOnly className="w-96" placeholder="Data" />
+                    <Input readOnly value={inputKey} className="w-96" placeholder="Public Key" />
+                    <Input readOnly value={newData} className="w-96" placeholder="Data" />
                     <Button className="w-24" onClick={()=>{
                         const newKey = Keypair.generate();
                         setInputKey(newKey.publicKey.toBase58());
